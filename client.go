@@ -48,6 +48,14 @@ const (
 	timestampKey  = "timestamp"
 	signatureKey  = "signature"
 	recvWindowKey = "recvWindow"
+
+	StatusNew             = "NEW"
+	StatusPartiallyFilled = "PARTIALLY_FILLED"
+	StatusFilled          = "FILLED"
+	StatusCanceled        = "CANCELED"
+	StatusPendingCancel   = "PENDING_CANCEL "
+	StatusRejected        = "REJECTED"
+	StatusExpired         = "EXPIRED"
 )
 
 func currentTimestamp() int64 {
@@ -72,6 +80,18 @@ func NewClient(apiKey, secretKey string) *Client {
 		BaseURL:    "https://www.binance.com",
 		UserAgent:  "Binance/golang",
 		HTTPClient: http.DefaultClient,
+		Logger:     log.New(os.Stderr, "Binance-golang ", log.LstdFlags),
+	}
+}
+
+// NewClientWithHTTPClient initializes an API client instance with a custom http.Client.
+func NewClientWithHTTPClient(apiKey, secretKey string, httpClient *http.Client) *Client {
+	return &Client{
+		APIKey:     apiKey,
+		SecretKey:  secretKey,
+		BaseURL:    "https://api.binance.com",
+		UserAgent:  "Binance/golang",
+		HTTPClient: httpClient,
 		Logger:     log.New(os.Stderr, "Binance-golang ", log.LstdFlags),
 	}
 }
